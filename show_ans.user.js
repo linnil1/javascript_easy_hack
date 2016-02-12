@@ -6,21 +6,21 @@
 	// @exclude		
 // ==/UserScript==
 
-alert(counter+","+iq_value);
+alert(counter+","+iq_value);// this use for debug
 
-//init
-var precounter=1;
-
-//init myBtn color
+//add color
 var Mystyle = document.createElement('style');
 Mystyle.innerHTML = 
 "#myBtn:hover{background-color:#006600;color:red ;font-size:20px;cursor:pointer;}"+
 "#myBtn      {background-color:#66ff66;color:blue;font-size:15px}"+
-".WAcolor,.ACcolor{font-size:18px;position:absolute ;right: 102%;}"+
+".WAcolor,.ACcolor{font-size:30px;position:absolute ;right: 102%;}"+
 ".WAcolor{color:#cc0000;}"+
 ".ACcolor{color:#113311;}";
 document.head.appendChild(Mystyle);
 
+
+//init
+var precounter=0,ShowAns=0;
 
 // get click 
 $(document).ready(function(){
@@ -34,25 +34,19 @@ $(document).ready(function(){
 		if( isFocus(counter) && precounter!=counter){
 			var mylist = readList(counter);
 			createBtn(mylist);
-			createAns(mylist);
 			precounter = counter;
+			ShowAns=0;
 		}
 	});
 
 });
-
 
 function isFocus(num){
 	return document.getElementById("q"+num).style.display == "list-item";
 };
 
 function readList(num){
-	var c,str="";
-	c = document.getElementById("q"+num).firstChild.childNodes;
-	return c; 
-//	for(var i= 1 ;i<c.length;++i)
-//		str+= c[i].getAttribute("value") +"\n";
-//	alert(str);
+	return document.getElementById("q"+num).firstChild.childNodes;
 }
 
 function createBtn(mylist){
@@ -60,10 +54,16 @@ function createBtn(mylist){
 	myBtn.appendChild( document.createTextNode("Show Answer") );
 	myBtn.setAttribute("id","myBtn");
 	myBtn.addEventListener("click",function(){
-		alert("show me answer >/////< ");
+		if( ShowAns == 0 ){
+			createAns(mylist);
+			ShowAns=1;
+		}
+			
+//		alert("show me answer >/////< ");
 	});
 	mylist[0].appendChild(myBtn);
 }
+
 function findBest(mylist){
 	var num=0,themax=0;
 	for(var i=1;i<mylist.length;++i)
