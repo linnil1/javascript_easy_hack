@@ -13,6 +13,7 @@ var Mystyle = document.createElement('style');
 Mystyle.innerHTML = 
 "#myBtn:hover,#myBtn:disabled{background-color:#006600;color:red ;font-size:20px;}"+
 "#myBtn      {background-color:#66ff66;color:blue;font-size:15px}"+
+"#alwBtn {background-color:#027446;color:#027446;position:fixed;left:0;top:0;border-style: hidden;}"+
 ".WAcolor,.ACcolor{font-size:30px;position:absolute ;right: 102%;}"+
 ".WAcolor{color:#cc0000;}"+
 ".ACcolor{color:#113311;}";
@@ -21,6 +22,17 @@ document.head.appendChild(Mystyle);
 
 //init
 var precounter=0,AlwaysShow=0;
+var alwBtn = document.createElement("button"); // always see the answer
+alwBtn.appendChild( document.createTextNode("Show Answer") );
+alwBtn.setAttribute("id","alwBtn");
+alwBtn.setAttribute("class","sumome-share-client-animated sumome-share-client-share");
+alwBtn.addEventListener("click",function(){
+	LOCK_TIME=0;
+	AlwaysShow=1;
+	alert('Do not use something crazyXD');
+	this.disabled=true;
+});
+document.body.appendChild(alwBtn);
 
 // get click 
 $(document).ready(function(){
@@ -61,7 +73,7 @@ function createBtn(mylist){
 	});
 	
 	mylist[0].appendChild(myBtn);
-	if(AlwaysShow){
+	if(AlwaysShow && myBtn.disabled==false){
 		createAns(mylist);
 		myBtn.disabled=true;
 	}
@@ -69,11 +81,12 @@ function createBtn(mylist){
 
 function findBest(mylist){
 	var num=0,themax=0;
-	for(var i=1;i<mylist.length;++i)
-		if( mylist[i].getAttribute("value") != "0" )
-			if(themax==0||Number(themax) < Number(mylist[i])){
+	for(var i=1;i<mylist.length;++i){
+		var value = mylist[i].getAttribute("value");
+		if(value  != "0" )
+			if(themax==0||Number(themax) < Number(value) )
 				num=i;
-				themax = mylist[i];
+				themax = value;
 			}
 	//i think most problem can be solved only by using number comparsion
 	return num;
