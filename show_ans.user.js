@@ -1,17 +1,17 @@
 // ==UserScript==
-	// @name		get test answer
-	// @namespace	my123
-	// @description get answer with my greasemonkey        
-	// @include		http://www.arealme.com/*
-	// @exclude		
+// @name		get test answer
+// @namespace	my123
+// @description get answer with my greasemonkey        
+// @include		http://www.arealme.com/*
+// @exclude		
 // ==/UserScript==
 
-alert(counter+","+iq_value);// this use for debug
+alert("You use something hack!!");// this use for debug
 
 //add color
 var Mystyle = document.createElement('style');
 Mystyle.innerHTML = 
-"#myBtn:hover{background-color:#006600;color:red ;font-size:20px;cursor:pointer;}"+
+"#myBtn:hover,#myBtn:disabled{background-color:#006600;color:red ;font-size:20px;}"+
 "#myBtn      {background-color:#66ff66;color:blue;font-size:15px}"+
 ".WAcolor,.ACcolor{font-size:30px;position:absolute ;right: 102%;}"+
 ".WAcolor{color:#cc0000;}"+
@@ -20,7 +20,7 @@ document.head.appendChild(Mystyle);
 
 
 //init
-var precounter=0,ShowAns=0;
+var precounter=0,AlwaysShow=0;
 
 // get click 
 $(document).ready(function(){
@@ -35,7 +35,6 @@ $(document).ready(function(){
 			var mylist = readList(counter);
 			createBtn(mylist);
 			precounter = counter;
-			ShowAns=0;
 		}
 	});
 
@@ -50,24 +49,28 @@ function readList(num){
 }
 
 function createBtn(mylist){
-	var myBtn = document.createElement("buttom");
+	var myBtn = document.createElement("button");
 	myBtn.appendChild( document.createTextNode("Show Answer") );
 	myBtn.setAttribute("id","myBtn");
+	
 	myBtn.addEventListener("click",function(){
-		if( ShowAns == 0 ){
 			createAns(mylist);
-			ShowAns=1;
-		}
-			
+			this.disabled=true;
+
 //		alert("show me answer >/////< ");
 	});
+	
 	mylist[0].appendChild(myBtn);
+	if(AlwaysShow){
+		createAns(mylist);
+		myBtn.disabled=true;
+	}
 }
 
 function findBest(mylist){
 	var num=0,themax=0;
 	for(var i=1;i<mylist.length;++i)
-		if( mylist[i] != "0" )
+		if( mylist[i].getAttribute("value") != "0" )
 			if(themax==0||Number(themax) < Number(mylist[i])){
 				num=i;
 				themax = mylist[i];
