@@ -93,14 +93,15 @@ function createBtn(mylist){
 }
 
 function findBest(mylist){
-	var num=0,themax=0;
+	var num=[],themax=0;
 	for(var i=1;i<mylist.length;++i){
 		var value = mylist[i].getAttribute("value");
 		if(value  != "0" )
 			if(themax==0||Number(themax) < Number(value) )
-				num=i;
 				themax = value;
-			}
+	}
+	for(var i=1;i<mylist.length;++i)
+		num[i] = mylist[i].getAttribute("value")==themax;
 	//i think most problem can be solved only by using number comparsion
 	return num;
 }
@@ -110,12 +111,13 @@ function createAns(mylist){
 	var num = findBest(mylist);
 
 	for(var i=1;i<mylist.length;++i)
-		if(i!=num) //wrong answer
+		if(!num[i]) //wrong answer
 		{
 			var wa = document.createElement("div");
 			wa.appendChild( document.createTextNode("✖"));
 			wa.setAttribute("class","WAcolor");
-			mylist[i].style = "background-color:#ffcccc" ;
+			if( mylist[i].getAttribute("value") == "0" )
+				mylist[i].style = "background-color:#ffcccc" ;
 			mylist[i].insertBefore(wa,mylist[i].firstChild);
 		}
 		else
