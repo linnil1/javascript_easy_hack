@@ -18,7 +18,7 @@ var Mystyle = document.createElement('style');
 Mystyle.innerHTML = 
 "#myBtn:hover,#myBtn:disabled{background-color:#006600;color:red ;font-size:20px;}"+
 "#myBtn      {background-color:#66ff66;color:blue;font-size:15px}"+
-"#alwBtn {background-color:#027446;color:#027446;position:fixed;left:0;top:0;border-style: hidden;}"+
+"#alwBtn {position:fixed;left:0;top:0;border-style: hidden;}"+
 ".WAcolor,.ACcolor{font-size:30px;position:absolute ;right: 102%;}"+
 ".WAcolor{color:#cc0000;}"+
 ".ACcolor{color:#113311;}";
@@ -51,6 +51,8 @@ $(document).ready(function(){
 	var alwBtn = document.createElement("button"); // always see the answer
 	alwBtn.appendChild( document.createTextNode("Show Answer") );
 	alwBtn.setAttribute("id","alwBtn");
+	alwBtn.style.backgroundColor = //hide in the title background
+	alwBtn.style.color = $("h1").css("background-color");
 	alwBtn.setAttribute("class","sumome-share-client-animated sumome-share-client-share");
 	alwBtn.addEventListener("click",function(){
 //		LOCK_TIME=0;//it doesn't work ?
@@ -93,15 +95,28 @@ function createBtn(mylist){
 }
 
 function findBest(mylist){
-	var num=[],themax=0;
+	var num=[],themax=0,themin=2147483647;
+	var nantest=0;
 	for(var i=1;i<mylist.length;++i){
 		var value = mylist[i].getAttribute("value");
-		if(value  != "0" )
-			if(themax==0||Number(themax) < Number(value) )
-				themax = value;
+		if(isNaN( Number(value) ) ){
+			++nantest;
+			continue;
+		}
+		if(         themax==0||Number(themax) < Number(value) )
+			themax = value;
+		if(themin==2147483647||Number(themin) >  Number(value) )
+			themin = value;
 	}
+	if(nantest==mylist.length - 1)
+		return undefined;
 	for(var i=1;i<mylist.length;++i)
-		num[i] = mylist[i].getAttribute("value")==themax;
+		if(      mylist[i].getAttribute("value")==themax )
+			num[i]=1;
+		else if( mylist[i].getAttribute("value")==themin )
+			num[i]=-1;
+		else
+			num[i]=0;
 	//i think most problem can be solved only by using number comparsion
 	return num;
 }
@@ -109,14 +124,19 @@ function findBest(mylist){
 			
 function createAns(mylist){
 	var num = findBest(mylist);
+	if(num==undefined)//strange value
+	{
+		alert("I don't know");
+		return ;
+	}
 
 	for(var i=1;i<mylist.length;++i)
-		if(!num[i]) //wrong answer
+		if(num[i]!=1) //wrong answer
 		{
 			var wa = document.createElement("div");
 			wa.appendChild( document.createTextNode("✖"));
 			wa.setAttribute("class","WAcolor");
-			if( mylist[i].getAttribute("value") == "0" )
+			if( num[i]==-1 )
 				mylist[i].style = "background-color:#ffcccc" ;
 			mylist[i].insertBefore(wa,mylist[i].firstChild);
 		}
