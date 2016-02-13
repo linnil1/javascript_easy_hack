@@ -115,6 +115,7 @@ function createAns(mylist){
 			var wa = document.createElement("div");
 			wa.appendChild( document.createTextNode("✖"));
 			wa.setAttribute("class","WAcolor");
+			mylist[i].style = "background-color:#ffcccc" ;
 			mylist[i].insertBefore(wa,mylist[i].firstChild);
 		}
 		else
@@ -122,6 +123,7 @@ function createAns(mylist){
 			var ac = document.createElement("div");
 			ac.appendChild( document.createTextNode("∨"));
 			ac.setAttribute("class","ACcolor");
+			mylist[i].style = "background-color:#aaff77" ;
 			mylist[i].insertBefore(ac,mylist[i].firstChild);
 		}
 }
