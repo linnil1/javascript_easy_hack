@@ -103,12 +103,21 @@ function findBest(mylist){
 			++nantest;
 			continue;
 		}
-		if(         themax==0||Number(themax) < Number(value) )
+		if(Number(themax) < Number(value) )
 			themax = value;
-		if(themin==2147483647||Number(themin) >  Number(value) )
+		if(Number(themin) >  Number(value) )
 			themin = value;
 	}
-	if(nantest==mylist.length - 1)
+	if(nantest==1){// special case 
+		for(var i=1;i<mylist.length;++i)
+			if( isNaN(mylist[i].getAttribute("value")) )
+				num[i]=1;
+			else
+				num[i]=-1;
+		return num;
+	}
+
+	if(nantest==mylist.length - 1) // strange value
 		return undefined;
 	for(var i=1;i<mylist.length;++i)
 		if(      mylist[i].getAttribute("value")==themax )
@@ -143,7 +152,7 @@ function createAns(mylist){
 		else
 		{
 			var ac = document.createElement("div");
-			ac.appendChild( document.createTextNode("∨"));
+			ac.appendChild( document.createTextNode("Ⅴ"));
 			ac.setAttribute("class","ACcolor");
 			mylist[i].style = "background-color:#aaff77" ;
 			mylist[i].insertBefore(ac,mylist[i].firstChild);
