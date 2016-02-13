@@ -1,4 +1,4 @@
-# javascript_easy_hack
+# hack the test in arealme by javascript
  A script  can peek the answer in the test of http://www.arealme.com/
 ##How to use
 ###Chrome
