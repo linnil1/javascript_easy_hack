@@ -1,6 +1,11 @@
 // ==UserScript==
 // @name		get test answer
-// @namespace	my123
+// @name:zh		看答案作弊工具
+// @namespace	linnil1
+// @grant		GM_getValue
+// @grant		GM_setValue
+// @grant		unsafeWindow
+// @require     http://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js
 // @description get answer with my greasemonkey        
 // @include		http://www.arealme.com/*
 // @exclude		
@@ -20,19 +25,7 @@ Mystyle.innerHTML =
 document.head.appendChild(Mystyle);
 
 
-//init
 var precounter=0,AlwaysShow=0;
-var alwBtn = document.createElement("button"); // always see the answer
-alwBtn.appendChild( document.createTextNode("Show Answer") );
-alwBtn.setAttribute("id","alwBtn");
-alwBtn.setAttribute("class","sumome-share-client-animated sumome-share-client-share");
-alwBtn.addEventListener("click",function(){
-	LOCK_TIME=0;
-	AlwaysShow=1;
-	alert('Do not use something crazyXD');
-	this.disabled=true;
-});
-document.body.appendChild(alwBtn);
 
 // get click 
 $(document).ready(function(){
@@ -43,12 +36,31 @@ $(document).ready(function(){
 	
 	$(document).click( function(){
 //		alert("click & click");
-		if( isFocus(counter) && precounter!=counter){
-			var mylist = readList(counter);
+		var syncounter = unsafeWindow.counter ;
+//		GM_getValue("counter");
+		if( isFocus(syncounter) && precounter!=syncounter){
+			var mylist = readList(syncounter);
 			createBtn(mylist);
-			precounter = counter;
+			precounter = syncounter;
 		}
 	});
+	
+	//init
+	console.log('thats hack');//i don't why it call twice
+	precounter=AlwaysShow=0;
+	var alwBtn = document.createElement("button"); // always see the answer
+	alwBtn.appendChild( document.createTextNode("Show Answer") );
+	alwBtn.setAttribute("id","alwBtn");
+	alwBtn.setAttribute("class","sumome-share-client-animated sumome-share-client-share");
+	alwBtn.addEventListener("click",function(){
+//		LOCK_TIME=0;//it doesn't work ?
+//		GM_setValue("LOCK_TIME",0);
+		unsafeWindow.LOCK_TIME=0;
+		AlwaysShow=1;
+		alert('Do not use something crazyXD');
+		this.disabled=true;
+	});
+	document.body.appendChild(alwBtn);
 
 });
 
@@ -74,6 +86,7 @@ function createBtn(mylist){
 	
 	mylist[0].appendChild(myBtn);
 	if(AlwaysShow && myBtn.disabled==false){
+		LOCK_TIME=0;//so i put it here ? however it doesn't work
 		createAns(mylist);
 		myBtn.disabled=true;
 	}
