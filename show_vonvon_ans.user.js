@@ -31,6 +31,7 @@ function creatalwBtn(){
 		alert("Don't use something bad!! XDDD");
 		AlwaysShow=1;
 		$("#myBtn").click();
+		$(".correct").click();
 	});
 	
 	$alwBtn.prependTo("#header");
@@ -70,7 +71,7 @@ function mymain(){
 			putAnsBtn();
 			if(AlwaysShow){
 				$("#myBtn").click();
-				$("#choice_"+showAns()).click();
+				$(".correct").click();
 			}
 		}
 	},300);
@@ -98,6 +99,10 @@ function showAns(){
 	for( i in cho )
 		if(cho[i])
 			break;
-	$("#choice_"+i).addClass("correct");
+	var ans = $("#choice_"+i);
+	if(ans.attr("type")=="button") 
+		ans.addClass("correct");
+	else
+		ans.prev().addClass("correct");
 	return i;
 }
