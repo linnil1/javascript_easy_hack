@@ -52,12 +52,11 @@ function mymain(){
 
 	
 	//init
-//	console.log('thats hack');
+	console.log('thats hack');
 	counter=AlwaysShow=0;
 
 	setInterval( function(){
 		if(counter==0){
-			console.log("why"+counter);
 	    	if($(".current").length == 0)// game not start yet
 				return; 
 			else{
@@ -69,10 +68,12 @@ function mymain(){
 		if( questionChange() ){
 			counter = angscope.questionNo;
 			putAnsBtn();
-			if(AlwaysShow)
+			if(AlwaysShow){
 				$("#myBtn").click();
+				$("#choice_"+showAns()).click();
+			}
 		}
-	},1000);
+	},300);
 
 };
 
@@ -98,4 +99,5 @@ function showAns(){
 		if(cho[i])
 			break;
 	$("#choice_"+i).addClass("correct");
+	return i;
 }
